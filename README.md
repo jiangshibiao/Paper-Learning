@@ -14,6 +14,10 @@
 + 如果同时需要前后文的记忆，可以用**双向RNN**：$x_t$ 同时由 $x_{t-1}$ 和 $x_{t+1}$ 决定。
 + 以上结构应用在输出和读入的长度相等，其实还有很多变式。如下图表示不相等时的结构（可以用于翻译）。这其实是一个 `encoder-decoder` 的思想。
 	![](RNN_cell2.png)
++ 应用
+	- Many to one：分类问题（词性判断，关键字提取）
+	- Many to many 文本翻译（Seq2Seq），语音翻译
+	- CNN+RNN：用文字描述图片特征
 
 #### LSTM
 
@@ -27,10 +31,12 @@
 	- 右下本层输出：$h_t=o_t \tanh(C_t)$。$o_t$ 是输出前乘的系数，计算公式和上述类似：$o_t=\sigma(W_o[h_{t-1},x_t]+b_o)$
 + **GRU** 本质上是简化后的 LSTM。它去掉了 $C_t$ 的结构，记忆元由 $h_t$ “兼任”。
 
+
+
+
 ## 序列识别：CRNN算法
 
 + [论文地址](https://arxiv.org/abs/1507.05717)
-+  注：[参考此文章进行学习和总结](https://blog.csdn.net/liuxiaoheng1992/article/details/88826043)
 +  文章认为文字识别是对序列的预测方法，所以采用了对序列预测的 RNN 网络。通过 CNN 将图片的特征提取出来后采用 RNN 对序列进行预测，最后通过一个 CTC 的翻译层得到最终结果。说白了就是 `CNN + RNN + CTC`的结构。
 	![](CRNN.png)
 + CNN 是直接在 VGG 基础上修改的。序列识别时，要求图片的维度是 $W \times 32$（宽度任意，高度要 resize 成 32）。将 VGG 网络的第三层、第四层 `pooling` 的卷积核从 $2 \times 2$ 改成 $1 \times 2$。结合四层 `pooling` 和最后一层 `conv`，卷积完成后的维度是 $\frac{W}{4} \times 1$。
