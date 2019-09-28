@@ -7,13 +7,13 @@
 
 + 注：[参考此文章进行学习和总结](https://blog.csdn.net/zhaojc1995/article/details/80572098)
 + RNN（Recurrent Neural Network）是一类用于处理序列数据的神经网络。抽象地来说，要让网络有**记忆**的特性。
-	![](RNN_cell.png)
+		![](RNN_cell.png)
      $$h^{(t)}=\Phi(Ux^{(t)}+Wh^{(t-1)}+b)$$
 + 激活函数 $\Phi$ 一般用 $\tanh$ 或者 $\sigma$(sigmoid)，反向传播容易**梯度爆炸**。
 + 用到了**参数共享**的思路。每一个时间（序列）下的神经元节点共用相同的结构和参数。实际操作的时候，将每个时间下的输入 $x_t$ 依次传入网络。
 + 如果同时需要前后文的记忆，可以用**双向RNN**：$x_t$ 同时由 $x_{t-1}$ 和 $x_{t+1}$ 决定。
 + 以上结构应用在输出和读入的长度相等，其实还有很多变式。如下图表示不相等时的结构（可以用于翻译）。这其实是一个 `encoder-decoder` 的思想。
-	![](RNN_cell2.png)
+		![](RNN_cell2.png)
 + 应用
 	- Many to one：分类问题（词性判断，关键字提取）
 	- Many to many 文本翻译（Seq2Seq），语音翻译
