@@ -6,9 +6,9 @@
 + [CTC](经典结构/经典结构.md#ctc算法)
 
 #### 图像检测
-+ [RCNN](图像检测/图像检测.md#rcnn)
-+ [Fast RCNN](图像检测/图像检测.md#fast-rcnn)
-+ [Faster RCNN](图像检测/图像检测.md#faster-rcnn)
++ [R-CNN](图像检测/图像检测.md#r-cnn)
++ [Fast R-CNN](图像检测/图像检测.md#fast-r-cnn)
++ [Faster R-CNN](图像检测/图像检测.md#faster-r-cnn)
 + [YOLOv1](图像检测/图像检测.md#yolo)
 + [YOLOv2](图像检测/图像检测.md#yolo2)
 
