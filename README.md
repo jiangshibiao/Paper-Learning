@@ -18,3 +18,6 @@
 + [CRNN](文本检测/文本检测.md#crnn)
 + [Mask TextSpotter](文本检测/文本检测.md#mask-textspotter)
 + [CTPN](文本检测/文本检测.md#ctpn)
+
+#### 图像分割
++ [Mask R-CNN](图像分割/图像分割.md#mask-r-cnn)
