@@ -1,8 +1,9 @@
 # Paper Learning
- > try to learn some classical papers and algorithms in machine learning
+ > try to learn some classical papers and algorithms in machine learning.
 
 #### 经典结构
-+ [RNN](经典结构/经典结构.md#recurrent-neural-network)
++ [常见术语](经典结构/常见术语)
++ [RNN](经典结构/经典结构.md#rnn)
 + [LSTM](经典结构/经典结构.md#拓展：lstm)
 + [CTC](经典结构/经典结构.md#ctc算法)
 
