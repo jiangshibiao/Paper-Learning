@@ -26,9 +26,9 @@
 + 创新点 **Mask Branch**：
 
 
-## CTPN（Connectionist Text Proposal Network）
+## CTPN
 
-+ 从 Faster R-CNN 修改而来。
++ CTPN (Connectionist Text Proposal Network) 从 Faster R-CNN 修改而来。
 + 继承了 Anchor 的思想。作者限定了 Anchor 的宽度 $w=16$，而高度在 $[11,273]$ 之间等比设置 $10$ 个。
 	![](CTPN2.jpg)
 + 基本步骤
@@ -50,3 +50,4 @@
     - 从框 $i$ 出发，找到和它临近的分数最高的框 $j$；再从 $j$ 反方向出发，找到对应的 $k$。
     - 如果 $score_i \ge score_k$，说明这是一个“最长的连接”，那么设 $G_{i,j}=True$
     - 这样我们可以对 $N$ 个框建出一个 $N^2$ 的图了。
+

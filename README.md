@@ -1,24 +1,24 @@
 # Paper Learning
  > try to learn some classical papers and algorithms in machine learning.
 
-#### 经典结构
-+ [常见术语](经典结构/常见术语)
-+ [RNN](经典结构/经典结构.md#rnn)
-+ [LSTM](经典结构/经典结构.md#拓展：lstm)
-+ [CTC](经典结构/经典结构.md#ctc算法)
+#### Basic Knowledge
++ [Classical Terms](Basic-Knowledge/Basic-Knowledge.md#常见术语)
++ [RNN](Basic-Knowledge/Basic-Knowledge.md#rnn)
++ [LSTM](Basic-Knowledge/Basic-Knowledge.md#拓展：lstm)
++ [CTC](Basic-Knowledge/Basic-Knowledge.md#ctc算法)
 
-#### 图像检测
-+ [R-CNN](图像检测/图像检测.md#r-cnn)
-+ [Fast R-CNN](图像检测/图像检测.md#fast-r-cnn)
-+ [Faster R-CNN](图像检测/图像检测.md#faster-r-cnn)
-+ [FCN](图像检测/图像检测.md#fcn)
-+ [YOLOv1](图像检测/图像检测.md#yolo)
-+ [YOLOv2](图像检测/图像检测.md#yolo2)
+#### Image Segmentation
++ [Mask R-CNN](Image-Segmentation/Image-Segmentation.md#mask-r-cnn)
 
-#### 文本检测
-+ [CRNN](文本检测/文本检测.md#crnn)
-+ [Mask TextSpotter](文本检测/文本检测.md#mask-textspotter)
-+ [CTPN](文本检测/文本检测.md#ctpn)
+#### Object Detection
++ [R-CNN](Objec-Detection/Objec-Detection.md#r-cnn)
++ [Fast R-CNN](Objec-Detection/Objec-Detection.md#fast-r-cnn)
++ [Faster R-CNN](Objec-Detection/Objec-Detection.md#faster-r-cnn)
++ [FCN](Objec-Detection/Objec-Detection.md#fcn)
++ [YOLOv1](Objec-Detection/Objec-Detection.md#yolo)
++ [YOLOv2](Objec-Detection/Objec-Detection.md#yolo2)
 
-#### 图像分割
-+ [Mask R-CNN](图像分割/图像分割.md#mask-r-cnn)
+#### Text Detection
++ [CRNN](Text-Detection/Text-Detection.md#crnn)
++ [Mask TextSpotter](Text-Detection/Text-Detection.md#mask-textspotter)
++ [CTPN](Text-Detection/Text-Detection.md#ctpn)
