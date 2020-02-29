@@ -2,10 +2,12 @@
  > try to learn some classical papers and algorithms in machine learning.
 
 #### Basic Knowledge
-+ [Classical Terms](Basic-Knowledge/Basic-Knowledge.md#常见术语)
-+ [RNN](Basic-Knowledge/Basic-Knowledge.md#rnn)
-+ [LSTM](Basic-Knowledge/Basic-Knowledge.md#拓展：lstm)
-+ [CTC](Basic-Knowledge/Basic-Knowledge.md#ctc算法)
++ [Classical Terms](Basic-Knowledge/Basic-Knowledge.md#classical-terms)
++ [Some Tricks](Basic-Knowledge/Basic-Knowledge.md#some-tricks)
+
+#### Image-Deblur
++ [DeepDeblur](Image-Deblur/Image-Deblur.md#deepdeblur)
++ [SRN-DeblurNet](Image-Deblur/Image-Deblur.md#deepdeblur)
 
 #### Image Segmentation
 + [Mask R-CNN](Image-Segmentation/Image-Segmentation.md#mask-r-cnn)
@@ -17,6 +19,11 @@
 + [FCN](Objec-Detection/Objec-Detection.md#fcn)
 + [YOLOv1](Objec-Detection/Objec-Detection.md#yolo)
 + [YOLOv2](Objec-Detection/Objec-Detection.md#yolo2)
+
+#### Sequence Models
++ [RNN](Sequence-Models/Sequence-Models.md#rnn)
++ [LSTM](Sequence-Models/Sequence-Models.md#拓展：lstm)
++ [CTC](Sequence-Models/Sequence-Models.md#ctc算法)
 
 #### Text Detection
 + [CRNN](Text-Detection/Text-Detection.md#crnn)
