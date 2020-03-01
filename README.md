@@ -8,6 +8,8 @@
 #### Image-Deblur
 + [DeepDeblur](Image-Deblur/Image-Deblur.md#deepdeblur)
 + [SRN-DeblurNet](Image-Deblur/Image-Deblur.md#deepdeblur)
++ [DeblurGAN](Image-Deblur/Image-Deblur.md#deblurgan)
++ [DeblurGAN-v2](Image-Deblur/Image-Deblur.md#deblurgan-v2)
 
 #### Image Segmentation
 + [Mask R-CNN](Image-Segmentation/Image-Segmentation.md#mask-r-cnn)
@@ -23,6 +25,7 @@
 #### Sequence Models
 + [RNN](Sequence-Models/Sequence-Models.md#rnn)
 + [LSTM](Sequence-Models/Sequence-Models.md#拓展：lstm)
++ [convLSTM](Sequence-Models/Sequence-Models.md#convlstm)
 + [CTC](Sequence-Models/Sequence-Models.md#ctc算法)
 
 #### Text Detection
