@@ -41,7 +41,7 @@
     
 ## DeblurGAN
 
-+   这是一篇 ECCV2018 的论文。[论文地址](file:///F:/deblur/DeblurGAN/1711.07064.pdf)
++   [这是一篇 ECCV2018 的论文。](file:///F:/deblur/DeblurGAN/1711.07064.pdf)
 +   作者提出了一种 “随机轨道法“（random trajectories）用来生成模糊的图像。
 +   [一个很棒的WGAN讲解](https://www.cnblogs.com/Allen-rg/p/10305125.html)
 +   网络架构
@@ -53,24 +53,24 @@
     +   Discriminator 的网络结构与 PatchGAN 相同（image-to-image translation 论文中采用的判别网络）。
 +   Loss 函数设计
     +   **Discriminator Loss**：
-        +   同 WGAN 的原理：$\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]-\mathbb{E}_{x \sim P_{r}}[f_{w}(x)]$
+        +   同 WGAN 的原理：$\mathbb{E}_{x \sim P_{g}}[f_{w}(x)]-\mathbb{E}_{x \sim P_{r}}[f_{w}(x)]$
         +   也可以加上 $\underset{\tilde{x} \sim P_{z}}{\mathbb{E}}[(\|\nabla_{\tilde{x}} D(\tilde{x})|_{2}-1)^{2}]$ 这部分来有效的限制 Lipschitz 条件中的 $K$
     +   **Generator Loss**：
-        +   同 WGAN 的原理：$-\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]$
+        +   同 WGAN 的原理：$-\mathbb{E}_{x \sim P_{g}}[f_{w}(x)]$
         +   再加上 **Perceptual Loss**：$\mathcal{L}_{X}=\frac{1}{W_{i, j} H_{i, j}} \sum_{x=1}^{W_{i, j}} \sum_{y=1}^{H_{i, j}}(\phi_{i, j}(I^{S})_{x, y}-\phi_{i, j}(G_{\theta_{G}}(I^{B}))_{x, y})^{2}$
         +   注意作者做的 **不是原图上的 MSE，而是 feature map 上的 MSE**。$W,H$ 是 feature map 的尺寸。
 
 ## DeblurGAN-v2
 
-+   这是一篇 ICCV2019 的论文，[论文地址](https://arxiv.org/abs/1908.03826)
++   [这是一篇 ICCV2019 的论文。](https://arxiv.org/abs/1908.03826)
 +   改进了第一版里 GAN 的框架
     ![](DeblurGANv2.jpg)
-    +   在 Generator 里使用 **FPN（图像金字塔）**结构，将五层不同尺度的合在了一起。
+    +   在 Generator 里使用 **FPN（图像金字塔）** 结构，将五层不同尺度的合在了一起。
         +   感觉这个结构就是抄 DeepDeblur 和 SRN-Deblur 里的多尺度啊，只是这里作者显式地说明了这是 FPN。
         +   每层的结构都一致，卷积层+池化层。注意最终也添加了一个 Skip Connection，学习残差。
     +   采用 Double-Scale RaGAN-LS Discriminator
         +   不再像 DeblurGAN 那样用 WGAN-GP 算 loss，而是适配了 **LSGAN**，作者发现这样更快也更稳定。
-        +   $L_{D}^{R a L S G A N}=E_{x p_{\text {lata}}(x)}\left[\left(D(x)-E_{z p_{z}(z)} D(G(z))-1\right)^{2}\right]+E_{z p_{z}(x)}\left[\left(D(G(z))-E_{x p_{\text {data}}(x)} D(x)+1\right)^{2}\right]$
+        +   $L_{D}^{R a L S G A N}=E_{x p_{\text {lata}}(x)}[(D(x)-E_{z p_{z}(z)} D(G(z))-1)^{2}]+E_{z p_{z}(x)}[(D(G(z))-E_{x p_{\text {data}}(x)} D(x)+1)^{2}]$
         +   用了 **全局** 和 **局部** 两个尺度。除了应用 DeblurGAN 里的局部裁剪（$70 \times 70$）的 PatchGAN，还加了一个整张图的大尺度。
     +   总的 Loss 计算函数：$L_{G}=0.5 * L_{p}+0.006 * L_{X}+0.01 * L_{a d v}$
         +   $L_X$ 就是 DeblurGAN 里 feature map 的比较。
