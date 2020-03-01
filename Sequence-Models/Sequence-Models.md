@@ -16,7 +16,7 @@
 	- Many to many 文本翻译（Seq2Seq），语音翻译
 	- CNN+RNN：用文字描述图片特征
 
-## 拓展：LSTM
+## LSTM
 
 + 传统 RNN 的记忆效果不是很好，不适合需要长期记忆的任务。
 + LSTM 全称 `Long Short Term Memory Networks`，能一定程度上解决长时依赖问题。
@@ -27,6 +27,14 @@
 	- 右上新的记忆：$C'_t=f_tC_{t-1}+i_tC_t$
 	- 右下本层输出：$h_t=o_t \tanh(C_t)$。$o_t$ 是输出前乘的系数，计算公式和上述类似：$o_t=\sigma(W_o[h_{t-1},x_t]+b_o)$
 + **GRU**（`gated recurrent unit`） 本质上是简化后的 LSTM。它去掉了 $C_t$ 的结构，记忆元由 $h_t$ “兼任”。
+
+## convLSTM
+
++ [论文地址](https://arxiv.org/abs/1506.04214v1)
+![](convLSTM.png)
++ convLSTM 其实就是把 LSTM 里读入输出的数字换成了图像，除了时间外额外关注了**空间上的相关性**。
++ 此时 $\mathcal{X}_t,\mathcal{H}_t, \mathcal{C}_t$ 都是二维的（如果算上图像的通道数，也可算作三维），而对应的 $W$ 就可以换做卷积。
++ 作者观察到：若 $W$ 的卷积核越大，就能够捕获更快的动作。
 
 ## CTC算法
 
