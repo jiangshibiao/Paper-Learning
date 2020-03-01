@@ -21,12 +21,12 @@
 + 生成图像和 GT 的相似度评估
     + PSNR（Peak Signal-to-Noise Ratio）峰值信噪比
         + 一个很自然的想法是利用均方误差：$\mathrm{MSE}=\frac{1}{mn} \sum_{i=0}^{m-1} \sum_{j=0}^{n-1}[I(i,j)-K(i,j)]^2$
-        + PSNR 在 MSE 的基础上做了伸缩： $\mathrm{PSNR}=10 \cdot \log _{10}\left(\frac{M A X^{2}}{M S E}\right)$ 。MAX 是像素的最大可能的值。
+        + PSNR 在 MSE 的基础上做了伸缩： $\mathrm{PSNR}=10 \cdot \log _{10}(\frac{M A X^{2}}{M S E})$ 。MAX 是像素的最大可能的值。
     + SSIM（Structural Similarity）结构相似性
         + 三方面去考察：亮度 $l(\mathbf{x}, \mathbf{y})=\frac{2 \mu_{x} \mu_{y}+C_{1}}{\mu_{x}^{2}+\mu_{y}^{2}+C_{1}}$，对比度 $c(\mathbf{x}, \mathbf{y})=\frac{2 \sigma_{x} \sigma_{y}+C_{2}}{\sigma_{x}^{2}+\sigma_{y}^{2}+C_{2}}$，结构 $s(\mathbf{x}, \mathbf{y})=\frac{\sigma_{x y}+C_{3}}{\sigma_{x} \sigma_{y}+C_{3}}$。
         + $C_1,C_2,C_3$ 是为了避免分母为 $0$ 的小常数。
         + $\operatorname{SSIM}(\mathbf{x}, \mathbf{y})=[l(\mathbf{x}, \mathbf{y})]^{\alpha}[c(\mathbf{x}, \mathbf{y})]^{\beta}[s(\mathbf{x}, \mathbf{y})]^{\gamma}$ ，一般取 $\alpha=\beta=\gamma=1, \quad C_{3}=C_{2} / 2$
-        + 所以我们有 $\operatorname{SSIM}(\mathbf{x}, \mathbf{y})=\frac{\left(2 \mu_{x} \mu_{y}+C_{1}\right)\left(\sigma_{x y}+C_{2}\right)}{\left(\mu_{x}^{2}+\mu_{y}^{2}+C_{1}\right)\left(\sigma_{x}^{2}+\sigma_{y}^{2}+C_{2}\right)}$
+        + 所以我们有 $\operatorname{SSIM}(\mathbf{x}, \mathbf{y})=\frac{(2 \mu_{x} \mu_{y}+C_{1})(\sigma_{x y}+C_{2})}{(\mu_{x}^{2}+\mu_{y}^{2}+C_{1})(\sigma_{x}^{2}+\sigma_{y}^{2}+C_{2})}$
 
 ## SRN-DeblurNet
 
@@ -53,11 +53,11 @@
     +   Discriminator 的网络结构与 PatchGAN 相同（image-to-image translation 论文中采用的判别网络）。
 +   Loss 函数设计
     +   **Discriminator Loss**：
-        +   同 WGAN 的原理：$\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]-\mathbb{E}_{x \sim P_{r}}\left[f_{w}(x)\right]$
-        +   也可以加上 $\underset{\tilde{x} \sim P_{z}}{\mathbb{E}}\left[\left(\left\|\nabla_{\tilde{x}} D(\tilde{x})\right\|_{2}-1\right)^{2}\right]$ 这部分来有效的限制 Lipschitz 条件中的 $K$
+        +   同 WGAN 的原理：$\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]-\mathbb{E}_{x \sim P_{r}}[f_{w}(x)]$
+        +   也可以加上 $\underset{\tilde{x} \sim P_{z}}{\mathbb{E}}[(\|\nabla_{\tilde{x}} D(\tilde{x})|_{2}-1)^{2}]$ 这部分来有效的限制 Lipschitz 条件中的 $K$
     +   **Generator Loss**：
         +   同 WGAN 的原理：$-\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]$
-        +   再加上 **Perceptual Loss**：$\mathcal{L}_{X}=\frac{1}{W_{i, j} H_{i, j}} \sum_{x=1}^{W_{i, j}} \sum_{y=1}^{H_{i, j}}\left(\phi_{i, j}\left(I^{S}\right)_{x, y}-\phi_{i, j}\left(G_{\theta_{G}}\left(I^{B}\right)\right)_{x, y}\right)^{2}$
+        +   再加上 **Perceptual Loss**：$\mathcal{L}_{X}=\frac{1}{W_{i, j} H_{i, j}} \sum_{x=1}^{W_{i, j}} \sum_{y=1}^{H_{i, j}}(\phi_{i, j}(I^{S})_{x, y}-\phi_{i, j}(G_{\theta_{G}}(I^{B}))_{x, y})^{2}$
         +   注意作者做的 **不是原图上的 MSE，而是 feature map 上的 MSE**。$W,H$ 是 feature map 的尺寸。
 
 ## DeblurGAN-v2
