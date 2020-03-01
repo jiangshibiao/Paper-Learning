@@ -31,9 +31,49 @@
 ## SRN-DeblurNet
 
 +   腾讯优图实验室 CVPR2018
+
 +   和 DeepDeblur 的网络结构差不多，在它的基础上加了点 LSTM 的思想。
     ![](SRN-net.png)
     +   在不同尺度下识别图片，每层用 **Encoder-Decoder** 的思想构建网络。
     +   除了采用 DeepBeblur 里的上采样合并的 trick 外，还把 Encoder 的最中心用 LSTM 的思想串起来。
     +   提出**在不同尺度上共享网络权重**（图中可以感受到），从而降低训练复杂度、增加稳定性。
-    +   （感觉至少稍微加了点创新性啊）
+    +   跑起来效果还是挺不错的，实测 GPU 上单张照片测试耗时 1~2 s。
+    
+## DeblurGAN
+
++   这是一篇 ECCV2018 的论文。[论文地址](file:///F:/deblur/DeblurGAN/1711.07064.pdf)
++   作者提出了一种 “随机轨道法“（random trajectories）用来生成模糊的图像。
++   [一个很棒的WGAN讲解](https://www.cnblogs.com/Allen-rg/p/10305125.html)
++   网络架构
+    +   总体架构就是普通的 GAN 网络。
+    +   Generator 的 CNN 网络结构
+        ![](DeblurGAN_CNN.png)
+        +   包含两个1/2间隔的卷积单元、9个 ResBlock 和两个反卷积单元。每个 ResBlock 由一个卷积层、归一化层和 ReLU 激活组成。
+        +   作者还强调加了一层 skip connection 来加速学习、提高效果。
+    +   Discriminator 的网络结构与 PatchGAN 相同（image-to-image translation 论文中采用的判别网络）。
++   Loss 函数设计
+    +   **Discriminator Loss**：
+        +   同 WGAN 的原理：$\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]-\mathbb{E}_{x \sim P_{r}}\left[f_{w}(x)\right]$
+        +   也可以加上 $\underset{\tilde{x} \sim P_{z}}{\mathbb{E}}\left[\left(\left\|\nabla_{\tilde{x}} D(\tilde{x})\right\|_{2}-1\right)^{2}\right]$ 这部分来有效的限制 Lipschitz 条件中的 $K$
+    +   **Generator Loss**：
+        +   同 WGAN 的原理：$-\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]$
+        +   再加上 **Perceptual Loss**：$\mathcal{L}_{X}=\frac{1}{W_{i, j} H_{i, j}} \sum_{x=1}^{W_{i, j}} \sum_{y=1}^{H_{i, j}}\left(\phi_{i, j}\left(I^{S}\right)_{x, y}-\phi_{i, j}\left(G_{\theta_{G}}\left(I^{B}\right)\right)_{x, y}\right)^{2}$
+        +   注意作者做的 **不是原图上的 MSE，而是 feature map 上的 MSE**。$W,H$ 是 feature map 的尺寸。
+
+## DeblurGAN-v2
+
++   这是一篇 ICCV2019 的论文，[论文地址](https://arxiv.org/abs/1908.03826)
++   改进了第一版里 GAN 的框架
+    ![](DeblurGANv2.jpg)
+    +   在 Generator 里使用 **FPN（图像金字塔）**结构，将五层不同尺度的合在了一起。
+        +   感觉这个结构就是抄 DeepDeblur 和 SRN-Deblur 里的多尺度啊，只是这里作者显式地说明了这是 FPN。
+        +   每层的结构都一致，卷积层+池化层。注意最终也添加了一个 Skip Connection，学习残差。
+    +   采用 Double-Scale RaGAN-LS Discriminator
+        +   不再像 DeblurGAN 那样用 WGAN-GP 算 loss，而是适配了 **LSGAN**，作者发现这样更快也更稳定。
+        +   $L_{D}^{R a L S G A N}=E_{x p_{\text {lata}}(x)}\left[\left(D(x)-E_{z p_{z}(z)} D(G(z))-1\right)^{2}\right]+E_{z p_{z}(x)}\left[\left(D(G(z))-E_{x p_{\text {data}}(x)} D(x)+1\right)^{2}\right]$
+        +   用了 **全局** 和 **局部** 两个尺度。除了应用 DeblurGAN 里的局部裁剪（$70 \times 70$）的 PatchGAN，还加了一个整张图的大尺度。
+    +   总的 Loss 计算函数：$L_{G}=0.5 * L_{p}+0.006 * L_{X}+0.01 * L_{a d v}$
+        +   $L_X$ 就是 DeblurGAN 里 feature map 的比较。
+        +   作者还加上了像素值 MSE 的 $L_p$ ，称可以减少颜色和纹理的扭曲。
++   测试结果挺不错，把当前的 SOTA 都虐了一遍（括号里的区别是生成器里每个单位使用的 CNN 结构）。
+![](results.png)
