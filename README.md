@@ -2,7 +2,8 @@
  > try to learn some classical papers and algorithms in machine learning.
 
 #### Basic Knowledge
-+ [Classical Terms](Basic-Knowledge/Basic-Knowledge.md#classical-terms)
++ [Classical Functions](Basic-Knowledge/Basic-Knowledge.md#classical-functions)
++ [Optimizer](Basic-Knowledge/Basic-Knowledge.md#optimizer)
 + [Some Tricks](Basic-Knowledge/Basic-Knowledge.md#some-tricks)
 
 #### Image-Deblur
