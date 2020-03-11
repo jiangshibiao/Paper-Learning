@@ -34,5 +34,7 @@
 
 #### Text Detection
 + [CRNN](Text-Detection/Text-Detection.md#crnn)
-+ [Mask TextSpotter](Text-Detection/Text-Detection.md#mask-textspotter)
 + [CTPN](Text-Detection/Text-Detection.md#ctpn)
++ [SegLink](Text-Detection/Text-Detection.md#seglink)
++ [Mask TextSpotter](Text-Detection/Text-Detection.md#mask-textspotter)
+

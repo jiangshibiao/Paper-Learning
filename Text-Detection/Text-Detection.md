@@ -48,23 +48,30 @@
     + Loss 即为回归值偏差（$\mathrm{L1~regression}$）和 Link 的偏差（$\mathrm{Softmax}$）。
     ![](SegLink_pipeline.png)
     
-    
 
 ## Mask TextSpotter
 
-+ **端到端**，旨在处理 STS（Scene Text Spotting）问题。
-+ 大部分做法都是把检测和识别分开。Mask TextSpotter 受到 Mask R-CNN 的启发，通过分割文本区域检测文本，**从而能识别弯曲的文本。**
++ Mask TextSpotter 受到 Mask R-CNN 的启发，通过引入分割的思想进行 **端到端** 训练，从而达到检测和识别任意形状文本的目的。 [ECCV2018](https://arxiv.org/abs/1807.02242)
 + 训练结构
-	![](Mask_TextSpotter.png)
-+ ROI
-	- ROI Pooling
-		+ 在传统的两级检测框架中，常用 ROI Pooling 作为原图像和 `feature map` 的转化
-		+ 预选框回归后是浮点数，从原图转到 `feature map` 取整会丢失像素，在割 $k \times k$ 特征池化的时候也会遇到不整除的问题。这些问题累积后，还原到原图上就会有很大的误差。
-		+ 该现象被称为 **不匹配问题（misalignment）**。
-	- ROI Align
-		+ 该思想在 **Mask-RCNN** 中首先被提出。
-		+ ROI Align 在遍历候选区域、分割单元的时候都不做取整处理。
-		+ 在每个单元中计算固定四个坐标位置，（由于坐标是浮点数）采用双线性插值去插出这四个位置的值，然后进行最大池化操作。
-		+ **要注意反向传播的问题**。
-+ 创新点 **Mask Branch**：
+    ![](Mask_TextSpotter.png)
+    + 采用 ResNet+FPN 提取特征。
+    + 用 RPN 生成大量的文本候选框，接着将候选框的 **RoI 特征** 分别送入 Fast RCNN 分支和 mask 分支。
+        - ROI Pooling
+            + 在传统的两级检测框架中，常用 ROI Pooling 作为原图像和 `feature map` 的转化
+            + 预选框回归后是浮点数，从原图转到 `feature map` 取整会丢失像素，在割 $k \times k$ 特征池化的时候也会遇到不整除的问题。这些问题累积后，还原到原图上就会有很大的误差。
+            + 该现象被称为 **不匹配问题（misalignment）**。
+        - ROI Align
+            + 该思想在 **Mask-RCNN** 中首先被提出。
+            + ROI Align 在遍历候选区域、分割单元的时候都不做取整处理。
+            + 在每个单元中计算固定四个坐标位置，（由于坐标是浮点数）采用双线性插值去插出这四个位置的值，然后进行最大池化操作。
+            + **要注意反向传播的问题**。
+    + 创新点： **Mask Branch**：
+        ![](Mask_TextSpotter_pipeline.png)
+        + 输入的 RoI 特征图经过 $4$ 个卷积核和 $1$ 个反卷积，最后输出 $38$ 张大小为 $32 \times 128$ 的图，包括 $１$ 个全局文本实例分割图（即任意形状文本的精确位置）、$36$个字符分割图（$1 \sim 9, a \sim z$)、$1$ 个背景分割图。
+    + 损失函数设计
+        + Rpn 网络的损失 和 Fast RCNN 分支的损失 和以前类似。
+        + 全局文本分割损失 $L_{g l o b a l}=-\frac{1}{N} \sum_{n=1}^{N}[y_{n} \log (S(x_{n}))+(1-y_{n}) \log(1-S(x_{n}))]$
+        + 字符分割损失 $L_{\text {char}}=-\frac{1}{N} \sum_{n=1}^{N} W_{n} \sum_{t=0}^{T-1} Y_{n, t} \log (\frac{e^{X_{n, t}}}{\sum_{k=0}^{T-1} e^{X_{N, k}}})$
+            + 其实就是每个位置对各字符求一个交叉熵损失。
+            + 权重 W 被用来均衡正（字符类）负（背景）样本
 
