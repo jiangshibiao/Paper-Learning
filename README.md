@@ -31,6 +31,8 @@
 + [LSTM](Sequence-Models/Sequence-Models.md#拓展：lstm)
 + [convLSTM](Sequence-Models/Sequence-Models.md#convlstm)
 + [CTC](Sequence-Models/Sequence-Models.md#ctc算法)
++ [Attention](Sequence-Models/Sequence-Models.md#attention)
++ [Transformer](Sequence-Models/Sequence-Models.md#transformer)
 
 #### Text Detection
 + [CRNN](Text-Detection/Text-Detection.md#crnn)

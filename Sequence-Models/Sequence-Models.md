@@ -56,3 +56,40 @@
 + 总结 CTC 的一些性质
 	- 接受了序列 $X$ 后，CTC导出的序列 $Y$ 满足 $|Y| \leq |X|$（多对一模型）。
 	- CTC 是假设每个时间片都是相互独立的，没有挖掘其中的语义。
+
+## Attention
+
++   Encoder-Decoder 模型有一个明显的缺陷：Encoder 后的向量是信息的全部表达，输入长时效果会变差。
++   注意力机制的原理很简单：在解码每一个输出向量的时候，不同的输入向量肯定占有不同的比重。所以在解码的时候，每一步都会**选择性地从输入序列中挑选相关向量进行处理**。
+    ![](Attention.png)
++   将 encoder 的输入抽象成三个向量 $\mathrm{(Query,Key,Value)}$，那么注意力机制就是**一个查询（Query）到一系列（键 Key-值 Value）对的映射**，即 $\mathrm{Attention=Softmax(Similar(Q,K))V}$。
+    1.   将 Query和每个 Key 进行相似度计算（点积，拼接，感知机等）得到 **权重**。
+    2.   使用 softmax 函数对这些权重进行归一化；
+    3.   最后将权重和相应的值 Value 进行加权求和得到最后的 Attention。
++   Attention 的一些分类
+    +   Soft Attention：可被嵌入到模型中去进行训练并传播梯度
+        +   Global Attention：对所有 encoder 输出进行计算，比较慢，也是我们常用的 Attention 做法。
+        +   Local Attention：会预测一个位置并选取一个窗口进行计算
+    +   Hard Attention：依据概率对 encoder 的输出采样，在反向传播时需采用蒙特卡洛进行梯度估计。
+
+## Transformer
+
++   Google 提出了解决 seq2seq 问题的 Transformer 模型，用全 Attention 的结构代替了 Lstm。
+
+    ![](encoder-decoder.png)
+
++   Encoder 设计
+
+    +   权重矩阵计算公式为 $\mathrm{Attention=Softmax(\frac{Q \times K^T}{\sqrt {d}}) \cdot V}$，其中 $\mathrm{Q[N,d],K[M,d],V[M,d]}$。
+        +   设一共有 $N$ 次查询，一共有 $M$ 种键值对应关系，每一个单词的词向量长度是 $d$ 。
+        +   除掉 $\sqrt d$ 是为了梯度更稳定。
+        +   采用 multi-headed attention 技术，即取  $t$ 组 不同的 $(Q,K,V)$ 一起训练。最终其实只需要 $[N,d]$ 的权重矩阵。可以将 $t$ 个矩阵直接连接成 $[N,td]$ 大小，再乘上一个 $[td,d]$ 的待确定的矩阵 $W$（因为后接神经网络，$W$ 的参数也一起参与训练）。
+    +   提出了 Positional Encoding 方法，为了解决 Self-Attention 机制的权重策略带来的弱化了顺序的问题。获得输入单词的词嵌入后，给其（按位）加上一个位置编码向量。
+    +   额外在每一层添加残差（Residuals）模块。
+
++   Decoder 设计
+
+    +   解码器的结构与编码器类似，会从上层继承向量信息然后做一步 Self-Attention。
+    +   注意解码器每一层还会额外添加一个来自编码器输出的注意力机制。
+    +   解码完毕后接一个线性变换层，把得到的若干个词向量投射到比它大得多的对数几率（logits）的向量里，相当于建立对每一个可能的输出单词之间权重大小。最后经过 Softmax 转化成概率分布。
+    +   最后与 GT 做交叉熵或者 KL 散度来建立 loss。
